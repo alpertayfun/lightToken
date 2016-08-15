@@ -8,7 +8,7 @@ npm install lightToken
 
 
 ```
-var lightToken = require("lightToken");
+var lightToken = require("lighttoken");
 
 
 var message = "hello world!!!";
