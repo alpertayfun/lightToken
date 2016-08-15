@@ -21,3 +21,8 @@ var tokenVerify = lightToken.authVerify(token,key);
 
 console.log(tokenVerify);
 ```
+
+
+Please check algorithm list :
+
+https://gist.github.com/reggi/4459803
