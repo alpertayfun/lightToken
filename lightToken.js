@@ -18,7 +18,7 @@ try {
 	};
 
 	crypto = require('crypto');
-	module.exports.authSign = function(message,key,options){
+	module.exports.authSign = function(message,key,options,callback){
 		
 		if(typeof options === 'object')
 		{
@@ -46,20 +46,23 @@ try {
 				var cipher3 = crypto.createCipher(algorithm3,key);
 				var crypted3 = cipher3.update(crypted2+"."+JSON.stringify(options)+"."+now+"."+expire,'utf8','hex');
 				crypted3 += cipher3.final('hex');
-
+				callback({sign:""+crypted+"."+crypted2+"."+crypted3+"",algorithm:algorithm,expire:expire});
 				return crypted+"."+crypted2+"."+crypted3;
-
+				
 			}catch(e){
+				callback({error:"auth Error"});
 				return "auth Error";
+				
 			}
 		}else{
+			callback({error:"options not defined"});
 			return "options not defined";
 		}
 
 	 	
 	};
 
-	module.exports.authVerify = function(message,key){
+	module.exports.authVerify = function(message,key,callback){
 		
 		var messageGet = message.split(".");
 	
@@ -93,6 +96,7 @@ try {
 						var decipher = crypto.createDecipher(algorithm,key)
 						var dec = decipher.update(dec2,'hex','utf8')
 						dec += decipher.final('utf8');
+						callback({verify:JSON.parse(dec)});
 						return JSON.parse(dec);
 					}else{
 
@@ -115,8 +119,10 @@ try {
 									var decipher = crypto.createDecipher(algorithm,key)
 									var dec = decipher.update(dec2,'hex','utf8')
 									dec += decipher.final('utf8');
+									callback({verify:JSON.parse(dec)});
 									return JSON.parse(dec);
 								}else{
+									callback({error:"auth Error"});
 									return "auth Error";
 								}
 							}
@@ -135,8 +141,10 @@ try {
 									var decipher = crypto.createDecipher(algorithm,key)
 									var dec = decipher.update(dec2,'hex','utf8')
 									dec += decipher.final('utf8');
+									callback({verify:JSON.parse(dec)});
 									return JSON.parse(dec);
 								}else{
+									callback({error:"auth Error"});
 									return "auth Error";
 								}
 							}
@@ -155,8 +163,10 @@ try {
 									var decipher = crypto.createDecipher(algorithm,key)
 									var dec = decipher.update(dec2,'hex','utf8')
 									dec += decipher.final('utf8');
+									callback({verify:JSON.parse(dec)});
 									return JSON.parse(dec);
 								}else{
+									callback({error:"auth Error"});
 									return "auth Error";
 								}
 							}
@@ -175,8 +185,10 @@ try {
 									var decipher = crypto.createDecipher(algorithm,key)
 									var dec = decipher.update(dec2,'hex','utf8')
 									dec += decipher.final('utf8');
+									callback({verify:JSON.parse(dec)});
 									return JSON.parse(dec);
 								}else{
+									callback({error:"auth Error"});
 									return "auth Error";
 								}
 							}
@@ -195,8 +207,10 @@ try {
 									var decipher = crypto.createDecipher(algorithm,key)
 									var dec = decipher.update(dec2,'hex','utf8')
 									dec += decipher.final('utf8');
+									callback({verify:JSON.parse(dec)});
 									return JSON.parse(dec);
 								}else{
+									callback({error:"auth Error"});
 									return "auth Error";
 								}
 							}
@@ -204,13 +218,16 @@ try {
 					
 					}
 				}else{
+					callback({error:"auth Error"});
 					return "auth Error";
 				}
 			}catch(e){
+				callback({error:"auth Error"});
 				return "auth Error";
 			}
 			
 		}else{
+			callback({error:"auth Error"});
 			return "auth Error";
 		}
 	
