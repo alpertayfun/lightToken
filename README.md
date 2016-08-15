@@ -4,7 +4,7 @@
 Simple use Token.
 
 
-npm install lightToken
+npm install lighttoken
 
 
 ```
