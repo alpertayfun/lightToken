@@ -145,15 +145,17 @@ var Base64 = {
 
 try {
 	
-	var deCrypto = function(algorithm,key,dec2,lightTIDEnc0,lightTIDEnc1,lightTIDEnc2,optionsGet2,callback){
+	var deCrypto = function(algorithm,key,dec2,lightTIDEnc0,lightTIDEnc1,lightTIDEnc2,optionsGet2,optionsGet4,callback){
 
 		var decipher = crypto.createDecipher(algorithm,key)
 		var dec = decipher.update(dec2,'hex','utf8')
 		dec += decipher.final('utf8');
+		
 
 		if(dec==lightTIDEnc0 && key == lightTIDEnc1 && optionsGet2 == lightTIDEnc2)
 		{
-			callback({verify:JSON.parse(dec)});
+
+			callback({verify:JSON.parse(dec),lightTID:optionsGet4});
 		}else{
 			callback({error:"auth Error"});
 		}
@@ -255,8 +257,8 @@ try {
 						{
 							if(checkTime=="0")
 							{
-								deCrypto(algorithm,key,dec2,lightTIDEnc[0],lightTIDEnc[1],lightTIDEnc[2],optionsGet[2], function(data){
-									console.log(data);
+								deCrypto(algorithm,key,dec2,lightTIDEnc[0],lightTIDEnc[1],lightTIDEnc[2],optionsGet[2],optionsGet[4], function(data){
+									callback(data);
 								});
 							}else{
 
@@ -273,8 +275,8 @@ try {
 										if(Date.today().between(compare1,compare2))
 										{
 
-											deCrypto(algorithm,key,dec2,lightTIDEnc[0],lightTIDEnc[1],lightTIDEnc[2],optionsGet[2], function(data){
-												console.log(data);
+											deCrypto(algorithm,key,dec2,lightTIDEnc[0],lightTIDEnc[1],lightTIDEnc[2],optionsGet[2],optionsGet[4], function(data){
+												callback(data);
 											});
 										}else{
 											callback({error:"auth Error"});
@@ -290,8 +292,8 @@ try {
 										if(Date.today().between(compare1,compare2))
 										{
 
-											deCrypto(algorithm,key,dec2,lightTIDEnc[0],lightTIDEnc[1],lightTIDEnc[2],optionsGet[2], function(data){
-												console.log(data);
+											deCrypto(algorithm,key,dec2,lightTIDEnc[0],lightTIDEnc[1],lightTIDEnc[2],optionsGet[2],optionsGet[4], function(data){
+												callback(data);
 											});
 										}else{
 											callback({error:"auth Error"});
@@ -307,8 +309,8 @@ try {
 										if(Date.today().between(compare1,compare2))
 										{
 
-											deCrypto(algorithm,key,dec2,lightTIDEnc[0],lightTIDEnc[1],lightTIDEnc[2],optionsGet[2], function(data){
-												console.log(data);
+											deCrypto(algorithm,key,dec2,lightTIDEnc[0],lightTIDEnc[1],lightTIDEnc[2],optionsGet[2],optionsGet[4], function(data){
+												callback(data);
 											});
 										}else{
 											callback({error:"auth Error"});
@@ -324,8 +326,8 @@ try {
 										if(Date.today().between(compare1,compare2))
 										{
 
-											deCrypto(algorithm,key,dec2,lightTIDEnc[0],lightTIDEnc[1],lightTIDEnc[2],optionsGet[2], function(data){
-												console.log(data);
+											deCrypto(algorithm,key,dec2,lightTIDEnc[0],lightTIDEnc[1],lightTIDEnc[2],optionsGet[2],optionsGet[4], function(data){
+												callback(data);
 											});
 										}else{
 											callback({error:"auth Error"});
@@ -341,8 +343,8 @@ try {
 										if(Date.today().between(compare1,compare2))
 										{
 
-											deCrypto(algorithm,key,dec2,lightTIDEnc[0],lightTIDEnc[1],lightTIDEnc[2],optionsGet[2], function(data){
-												console.log(data);
+											deCrypto(algorithm,key,dec2,lightTIDEnc[0],lightTIDEnc[1],lightTIDEnc[2],optionsGet[2],optionsGet[4], function(data){
+												callback(data);
 											});
 										}else{
 											callback({error:"auth Error"});
@@ -376,6 +378,5 @@ try {
 	};
 
 } catch (err) {
-	console.log('crypto support is disabled!');
 	return "auth Error";
 }
