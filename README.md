@@ -40,7 +40,7 @@ var tokenVerify = lightToken.authVerify(token,key,function(data) {
 
 
 
-## lightToken.authSign(token, secretOrPublicKey, options, [callback])
+## lightToken.authSign(token, secretKey, options, [callback])
 
 
 ## lightToken.authVerify(token, secretKey, options, [callback])
