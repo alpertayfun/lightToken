@@ -7,6 +7,23 @@ Simple use Token.
 npm install lighttoken
 
 
+### Options : 
+
+- algorithm.
+
+```
+ 	Please check algorithm list :
+
+	https://gist.github.com/reggi/4459803
+```
+- expire.
+```
+	 "m" : minute , "h" : hour , "days" : day , "years" : year , "s" : second 
+
+```
+
+### Usage : 
+
 ```
 var lightToken = require("lighttoken");
 
@@ -24,6 +41,3 @@ var tokenVerify = lightToken.authVerify(token,key,function(data) {
 ```
 
 
-Please check algorithm list :
-
-https://gist.github.com/reggi/4459803
