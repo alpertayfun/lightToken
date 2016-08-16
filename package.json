@@ -1,6 +1,6 @@
 {
   "name": "lighttoken",
-  "version": "1.0.9",
+  "version": "1.0.10",
   "description": "lightToken",
   "main": "index.js",
   "scripts": {
