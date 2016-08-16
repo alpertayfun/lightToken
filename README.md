@@ -6,6 +6,7 @@
 [![Join the chat at https://gitter.im/lighttoken/Lobby](https://badges.gitter.im/lighttoken/Lobby.svg)](https://gitter.im/lighttoken/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 
+[![NPM](https://nodei.co/npm/lighttoken.png?compact=true)](https://nodei.co/npm/lighttoken/)
 
 
 Simple use Token.
