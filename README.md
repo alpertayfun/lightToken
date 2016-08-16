@@ -9,12 +9,10 @@ npm install lighttoken
 
 ### Options : 
 
-- algorithm.
+- algorithm. Please check algorithm list.
 
 ```
- 	Please check algorithm list :
-
-	https://gist.github.com/reggi/4459803
+	https://gist.github.com/reggi/4459803#file-openssl-list-cipher-algorithms
 ```
 - expire.
 ```
