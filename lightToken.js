@@ -144,7 +144,11 @@ var Base64 = {
 
 
 try {
-	
+
+	var timeStamp = function(date){
+		return Math.floor(date / 1000);
+	};
+
 	var deCrypto = function(algorithm,key,dec2,lightTIDEnc0,lightTIDEnc1,lightTIDEnc2,optionsGet2,optionsGet4,callback){
 
 		var decipher = crypto.createDecipher(algorithm,key)
@@ -169,13 +173,16 @@ try {
 
 	crypto = require('crypto');
 	module.exports.authSign = function(message,key,options,callback){
-		
+	
 
 		if(typeof options === 'object')
 		{
 			try{
-				var now = Date.today();
-				
+
+				var now = Date.now();
+				console.log(now);
+				console.log(timeStamp(now));
+
 				lightTID = Base64.encode(JSON.stringify(message)+"|||"+key+"|||"+now);
 
 				if(options.hasOwnProperty("algorithm"))
@@ -272,7 +279,7 @@ try {
 										newCheckTime = checkTime.replace("h","");
 										compare2 = compare2.add({ hours: newCheckTime});
 										
-										if(Date.today().between(compare1,compare2))
+										if(Date.now().between(compare1,compare2))
 										{
 
 											deCrypto(algorithm,key,dec2,lightTIDEnc[0],lightTIDEnc[1],lightTIDEnc[2],optionsGet[2],optionsGet[4], function(data){
@@ -289,7 +296,7 @@ try {
 										newCheckTime = checkTime.replace("m","");
 										compare2 = compare2.add({ minutes: newCheckTime});
 										
-										if(Date.today().between(compare1,compare2))
+										if(Date.now().between(compare1,compare2))
 										{
 
 											deCrypto(algorithm,key,dec2,lightTIDEnc[0],lightTIDEnc[1],lightTIDEnc[2],optionsGet[2],optionsGet[4], function(data){
@@ -306,7 +313,7 @@ try {
 										newCheckTime = checkTime.replace("day","");
 										compare2 = compare2.add({ days: newCheckTime});
 										
-										if(Date.today().between(compare1,compare2))
+										if(Date.now().between(compare1,compare2))
 										{
 
 											deCrypto(algorithm,key,dec2,lightTIDEnc[0],lightTIDEnc[1],lightTIDEnc[2],optionsGet[2],optionsGet[4], function(data){
@@ -323,7 +330,7 @@ try {
 										newCheckTime = checkTime.replace("year","");
 										compare2 = compare2.add({ years: newCheckTime});
 										
-										if(Date.today().between(compare1,compare2))
+										if(Date.now().between(compare1,compare2))
 										{
 
 											deCrypto(algorithm,key,dec2,lightTIDEnc[0],lightTIDEnc[1],lightTIDEnc[2],optionsGet[2],optionsGet[4], function(data){
@@ -340,7 +347,7 @@ try {
 										newCheckTime = checkTime.replace("s","");
 										compare2 = compare2.add({ seconds: newCheckTime});
 										
-										if(Date.today().between(compare1,compare2))
+										if(Date.now().between(compare1,compare2))
 										{
 
 											deCrypto(algorithm,key,dec2,lightTIDEnc[0],lightTIDEnc[1],lightTIDEnc[2],optionsGet[2],optionsGet[4], function(data){
