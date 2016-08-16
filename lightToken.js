@@ -180,9 +180,7 @@ try {
 			try{
 
 				var now = Date.now();
-				console.log(now);
-				console.log(timeStamp(now));
-
+				
 				lightTID = Base64.encode(JSON.stringify(message)+"|||"+key+"|||"+now);
 
 				if(options.hasOwnProperty("algorithm"))
