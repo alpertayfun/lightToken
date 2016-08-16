@@ -11,8 +11,9 @@
 Simple use Token.
 
 
+```
 npm install lighttoken
-
+```
 
 
 ### Configuration
