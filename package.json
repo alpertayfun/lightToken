@@ -2,7 +2,7 @@
   "name": "lighttoken",
   "version": "1.0.16",
   "description": "lightToken",
-  "main": "index.js",
+  "main": "lightToken.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
