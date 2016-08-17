@@ -4,8 +4,8 @@ var dateJs = require("./date.js");
 
 //Default variables
 var	algorithm = 'DES-EDE-CBC',
-	algorithm2 = 'AES-256-XTS',
-	algorithm3 = 'AES-256-XTS',
+	algorithm2 = 'RC2-ECB',
+	algorithm3 = 'idea-cbc',
 	expire = "0",
 	expireCheck = ["m","h","day","year","s"],
 	newCheckTime="",
@@ -145,8 +145,42 @@ var Base64 = {
 
 try {
 
-	var timeStamp = function(date){
-		return Math.floor(date / 1000);
+	var getByes = function (e) {
+    	var bytes = [];
+	  	for (var i = 0; i < e.length; ++i) {
+	    	bytes.push(e.charCodeAt(i));
+	  	}
+	  	return bytes;
+    };
+
+    var getStfB = function(array) {
+	  var result = "";
+	  for (var i = 0; i < array.length; i++) {
+	    result += String.fromCharCode(parseInt(array[i], 2));
+	  }
+	  return result;
+	};
+
+    var toHexString = function (e) {
+    	 return e.map(function(byte) {
+		    return ('0' + (byte & 0xFF).toString(16)).slice(-2);
+		  }).join('')
+    };
+
+    var string2Bin = function(e) {
+	  var result = [];
+	  for (var i = 0; i < e.length; i++) {
+	    result.push(e.charCodeAt(i));
+	  }
+	  return result;
+	}
+
+	var bin2String = function(e) {
+	  return String.fromCharCode.apply(String, e);
+	}
+
+	var timeStamp = function(e){
+		return Math.floor(e / 1000);
 	};
 
 	var deCrypto = function(algorithm,key,dec2,lightTIDEnc0,optionsGet4,callback){
@@ -155,7 +189,6 @@ try {
 		var dec = decipher.update(dec2,'hex','utf8')
 		dec += decipher.final('utf8');
 		
-
 
 		if(dec==lightTIDEnc0)
 		{
@@ -173,7 +206,7 @@ try {
 
 	crypto = require('crypto');
 	module.exports.authSign = function(message,key,options,callback){
-	
+
 
 		if(typeof options === 'object')
 		{
@@ -196,20 +229,30 @@ try {
 				var cipher = crypto.createCipher(algorithm,key);
 				var crypted = cipher.update(JSON.stringify(message),'utf8','hex');
 				crypted += cipher.final('hex');
+				console.log(crypted.length);
 				
+				var hash = crypto.createHmac('SHA256', key).update(JSON.stringify(message)).digest('hex');
+				console.log(hash);
+
 				var cipher2 = crypto.createCipher(algorithm2,key);
 				var crypted2 = cipher2.update(JSON.stringify(options)+"."+lightTID,'utf8','hex');
 				crypted2 += cipher2.final('hex');
+				console.log(crypted2.length);
+				
+				
+				var bb = now+"."+expire;
 
 				var cipher3 = crypto.createCipher(algorithm3,key);
-				var crypted3 = cipher3.update(now+"."+expire,'utf8','hex');
+				var crypted3 = cipher3.update(bb,'utf8','hex');
 				crypted3 += cipher3.final('hex');
-
+				console.log(crypted3.length);
+				console.log("len total : "+ (crypted.length + crypted2.length + crypted3.length));
 
 				callback({sign:""+crypted+"."+crypted2+"."+crypted3+"",algorithm:algorithm,expire:expire,lightTID:lightTID});
 				return crypted+"."+crypted2+"."+crypted3;
 				
 			}catch(e){
+				console.log(e);
 				callback({error:"auth Error"});
 				return "auth Error";
 				

@@ -2,9 +2,12 @@ var lightToken = require("./lightToken.js");
 
 
 var message = "hello world!!!";
-var key = "1sd33asd34df45sd2";
+var key = "TOPSECRETTTTT";
 
-var token = lightToken.authSign({foo:'asdasdasasdasdasdasdasdasdasd',foo2:11232333,data:"çöçşşğüğüğIIİİ,,12*983qwopıaskş<zxz<x"},key,{algorithm:"DES-EDE-CBC",expire:"1 day"},function(data) {
+var payload = {foo:'asdasdasasdasdasdasdasdasdasd',foo2:11232333,data:"çöçşşğüğüğIIİİ,,1asdasdasdasdasdasd2*983qwopıaskş<zxz<x"};
+
+
+var token = lightToken.authSign(payload,key,{algorithm:"DES-EDE-CBC",expire:"1 day"},function(data) {
 	console.log(data);	
 });
 
