@@ -4,7 +4,7 @@ var dateJs = require("./date.js");
 
 //Default variables
 var	algorithm = 'DES-EDE-CBC',
-	algorithm2 = 'AES-256-CBC',
+	algorithm2 = 'DES-EDE-CBC',
 	algorithm3 = 'BF-CBC',
 	expire = "0",
 	expireCheck = ["m","h","day","year","s"],
