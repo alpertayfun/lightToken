@@ -21,7 +21,7 @@ npm install lighttoken
 
 - secretKey ( key ): A shared or secret key.
 - payload : Javascript Object.
-- options : algroithm , expire. 
+- options : algroithm ( Default : DES-EDE-CBC ), expire ( Default : 0 ( infite ) ). 
 
 
 ### Options : 
