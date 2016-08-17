@@ -4,8 +4,8 @@ var dateJs = require("./date.js");
 
 //Default variables
 var	algorithm = 'DES-EDE-CBC',
-	algorithm2 = 'DES-EDE-CBC',
-	algorithm3 = 'BF-CBC',
+	algorithm2 = 'AES-256-XTS',
+	algorithm3 = 'AES-256-XTS',
 	expire = "0",
 	expireCheck = ["m","h","day","year","s"],
 	newCheckTime="",
@@ -149,17 +149,17 @@ try {
 		return Math.floor(date / 1000);
 	};
 
-	var deCrypto = function(algorithm,key,dec2,lightTIDEnc0,lightTIDEnc1,lightTIDEnc2,optionsGet2,optionsGet4,callback){
-
+	var deCrypto = function(algorithm,key,dec2,lightTIDEnc0,optionsGet4,callback){
+							
 		var decipher = crypto.createDecipher(algorithm,key)
 		var dec = decipher.update(dec2,'hex','utf8')
 		dec += decipher.final('utf8');
 		
 
-		if(dec==lightTIDEnc0 && key == lightTIDEnc1 && optionsGet2 == lightTIDEnc2)
-		{
 
-			callback({verify:JSON.parse(dec),lightTID:optionsGet4});
+		if(dec==lightTIDEnc0)
+		{
+			callback({verify:JSON.parse(dec),lightTID:optionsGet4 });
 		}else{
 			callback({error:"auth Error"});
 		}
@@ -198,12 +198,14 @@ try {
 				crypted += cipher.final('hex');
 				
 				var cipher2 = crypto.createCipher(algorithm2,key);
-				var crypted2 = cipher2.update(crypted,'utf8','hex');
+				var crypted2 = cipher2.update(JSON.stringify(options)+"."+lightTID,'utf8','hex');
 				crypted2 += cipher2.final('hex');
 
 				var cipher3 = crypto.createCipher(algorithm3,key);
-				var crypted3 = cipher3.update(crypted2+"."+JSON.stringify(options)+"."+now+"."+expire+"."+lightTID,'utf8','hex');
+				var crypted3 = cipher3.update(now+"."+expire,'utf8','hex');
 				crypted3 += cipher3.final('hex');
+
+
 				callback({sign:""+crypted+"."+crypted2+"."+crypted3+"",algorithm:algorithm,expire:expire,lightTID:lightTID});
 				return crypted+"."+crypted2+"."+crypted3;
 				
@@ -224,53 +226,65 @@ try {
 	
 		if(messageGet.length==3)
 		{
-			try{
+			
 
 				var decipher3 = crypto.createDecipher(algorithm3,key)
 				var dec3 = decipher3.update(messageGet[2],'hex','utf8')
 				dec3 += decipher3.final('utf8');
-				var optionsGet = dec3.split(".");
-				var options = JSON.parse(optionsGet[1]);
-				
-				if(optionsGet.length==5)
+				var decGet = dec3.split(".");
+		
+
+				if(decGet.length==2)
 				{
-					if(options.hasOwnProperty("algorithm"))
-					{
-						algorithm = options.algorithm;
-					}
+					
 
 					var cipher3 = crypto.createCipher(algorithm3,key);
-					var crypted3 = cipher3.update(messageGet[1]+"."+JSON.stringify(options)+"."+optionsGet[2]+"."+optionsGet[3]+"."+optionsGet[4],'utf8','hex');
+					var crypted3 = cipher3.update(decGet[0]+"."+decGet[1],'utf8','hex');
 					crypted3 += cipher3.final('hex');
-
+			
+	
 					if(crypted3==messageGet[2])
 					{
-						var lightTIDEnc = Base64.decode(optionsGet[4]).split("|||");
 						
-						var checkTime = optionsGet[3];
-
-						var cipher2 = crypto.createCipher(algorithm2,key);
-						var crypted2 = cipher2.update(messageGet[0],'utf8','hex');
-						crypted2 += cipher2.final('hex');
+						
+						
 
 						var decipher2 = crypto.createDecipher(algorithm2,key)
-						var dec2 = decipher2.update(optionsGet[0],'hex','utf8')
+						var dec2 = decipher2.update(messageGet[1],'hex','utf8')
 						dec2 += decipher2.final('utf8');
 
+						var optionsGet = dec2.split(".");
+						var options = JSON.parse(optionsGet[0]);
+
+						var cipher2 = crypto.createCipher(algorithm2,key);
+						var crypted2 = cipher2.update(optionsGet[0]+"."+optionsGet[1],'utf8','hex');
+						crypted2 += cipher2.final('hex');
+
+						var checkTime = decGet[1];
+
+						var lightTIDEnc = Base64.decode(optionsGet[1]).split("|||");
 						
+
+						if(options.hasOwnProperty("algorithm"))
+						{
+							algorithm = options.algorithm;
+						}
+						
+
 						if(crypted2==messageGet[1])
 						{
+							
 							if(checkTime=="0")
 							{
-								deCrypto(algorithm,key,dec2,lightTIDEnc[0],lightTIDEnc[1],lightTIDEnc[2],optionsGet[2],optionsGet[4], function(data){
+								deCrypto(algorithm,key,messageGet[0],lightTIDEnc[0],optionsGet[1], function(data){
 									callback(data);
 								});
 							}else{
 
 								if (expireCheck.some(function(e) { return checkTime.indexOf(e) >= 0; })) {
 									
-									var compare1 = new Date(optionsGet[2]);
-									var compare2 = new Date(optionsGet[2]);
+									var compare1 = new Date(decGet[0]);
+									var compare2 = new Date(decGet[0]);
 									
 									if(checkTime.indexOf("h") !== -1)
 									{
@@ -280,7 +294,7 @@ try {
 										if(Date.now().between(compare1,compare2))
 										{
 
-											deCrypto(algorithm,key,dec2,lightTIDEnc[0],lightTIDEnc[1],lightTIDEnc[2],optionsGet[2],optionsGet[4], function(data){
+											deCrypto(algorithm,key,messageGet[0],lightTIDEnc[0],optionsGet[1], function(data){
 												callback(data);
 											});
 										}else{
@@ -297,7 +311,7 @@ try {
 										if(Date.now().between(compare1,compare2))
 										{
 
-											deCrypto(algorithm,key,dec2,lightTIDEnc[0],lightTIDEnc[1],lightTIDEnc[2],optionsGet[2],optionsGet[4], function(data){
+											deCrypto(algorithm,key,messageGet[0],lightTIDEnc[0],optionsGet[1], function(data){
 												callback(data);
 											});
 										}else{
@@ -314,7 +328,7 @@ try {
 										if(Date.now().between(compare1,compare2))
 										{
 
-											deCrypto(algorithm,key,dec2,lightTIDEnc[0],lightTIDEnc[1],lightTIDEnc[2],optionsGet[2],optionsGet[4], function(data){
+											deCrypto(algorithm,key,messageGet[0],lightTIDEnc[0],optionsGet[1], function(data){
 												callback(data);
 											});
 										}else{
@@ -331,7 +345,7 @@ try {
 										if(Date.now().between(compare1,compare2))
 										{
 
-											deCrypto(algorithm,key,dec2,lightTIDEnc[0],lightTIDEnc[1],lightTIDEnc[2],optionsGet[2],optionsGet[4], function(data){
+											deCrypto(algorithm,key,messageGet[0],lightTIDEnc[0],optionsGet[1], function(data){
 												callback(data);
 											});
 										}else{
@@ -348,7 +362,7 @@ try {
 										if(Date.now().between(compare1,compare2))
 										{
 
-											deCrypto(algorithm,key,dec2,lightTIDEnc[0],lightTIDEnc[1],lightTIDEnc[2],optionsGet[2],optionsGet[4], function(data){
+											deCrypto(algorithm,key,messageGet[0],lightTIDEnc[0],optionsGet[1], function(data){
 												callback(data);
 											});
 										}else{
@@ -360,21 +374,18 @@ try {
 							
 							}
 						}else{
-							callback({error:"auth Error"});
-							return "auth Error";
+							callback({error:"auth3 Error"});
+							return "auth3 Error";
 						}
 					}else{
-						callback({error:"auth Error"});
-						return "auth Error";
+						callback({error:"auth4 Error"});
+						return "auth4 Error";
 					}
 				}else{
 					callback({error:"auth Error"});
 					return "auth Error";
 				}
-			}catch(e){
-				callback({error:"auth Error"});
-				return "auth Error";
-			}
+		
 		}else{
 			callback({error:"auth Error"});
 			return "auth Error";

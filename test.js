@@ -2,9 +2,9 @@ var lightToken = require("./lightToken.js");
 
 
 var message = "hello world!!!";
-var key = "0k8j7h6g5f4d3s2ak8j7h6g5f4d3s2a";
+var key = "1sd33asd34df45sd2";
 
-var token = lightToken.authSign({ foo: 'bar' },key,{algorithm:"DES-EDE-CBC",expire:"3m"},function(data) {
+var token = lightToken.authSign({foo:'asdasdasasdasdasdasdasdasdasd',foo2:11232333,data:"çöçşşğüğüğIIİİ,,12*983qwopıaskş<zxz<x"},key,{algorithm:"DES-EDE-CBC",expire:"1 day"},function(data) {
 	console.log(data);	
 });
 
