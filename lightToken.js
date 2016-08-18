@@ -4,8 +4,8 @@ var dateJs = require("./date.js");
 
 //Default variables
 var	algorithm = 'DES-EDE-CBC',
-	algorithm2 = 'RC2-ECB',
-	algorithm3 = 'idea-cbc',
+	algorithm2 = 'RC4-HMAC-MD5',
+	algorithm3 = 'RC4-HMAC-MD5',
 	expire = "0",
 	expireCheck = ["m","h","day","year","s"],
 	newCheckTime="",
@@ -142,7 +142,6 @@ var Base64 = {
     }
 };
 
-
 try {
 
 	var getByes = function (e) {
@@ -214,7 +213,7 @@ try {
 
 				var now = Date.now();
 				
-				lightTID = Base64.encode(JSON.stringify(message)+"|||"+key+"|||"+now);
+				lightTID = Base64.encode(JSON.stringify(message)+"|||"+key);
 
 				if(options.hasOwnProperty("algorithm"))
 				{
@@ -229,23 +228,21 @@ try {
 				var cipher = crypto.createCipher(algorithm,key);
 				var crypted = cipher.update(JSON.stringify(message),'utf8','hex');
 				crypted += cipher.final('hex');
-				console.log(crypted.length);
 				
 				var hash = crypto.createHmac('SHA256', key).update(JSON.stringify(message)).digest('hex');
-				console.log(hash);
-
+				
 				var cipher2 = crypto.createCipher(algorithm2,key);
 				var crypted2 = cipher2.update(JSON.stringify(options)+"."+lightTID,'utf8','hex');
 				crypted2 += cipher2.final('hex');
-				console.log(crypted2.length);
 				
-				
-				var bb = now+"."+expire;
+				var bb = timeStamp(now)+"."+expire;
+				//var buff = new Buffer(JSON.stringify(options)+"."+lightTID).toString("base64");
+				//console.log(buff);
+				//console.log(Base64.decode(buff));
 
 				var cipher3 = crypto.createCipher(algorithm3,key);
 				var crypted3 = cipher3.update(bb,'utf8','hex');
 				crypted3 += cipher3.final('hex');
-				console.log(crypted3.length);
 				console.log("len total : "+ (crypted.length + crypted2.length + crypted3.length));
 
 				callback({sign:""+crypted+"."+crypted2+"."+crypted3+"",algorithm:algorithm,expire:expire,lightTID:lightTID});
@@ -326,9 +323,10 @@ try {
 
 								if (expireCheck.some(function(e) { return checkTime.indexOf(e) >= 0; })) {
 									
-									var compare1 = new Date(decGet[0]);
-									var compare2 = new Date(decGet[0]);
+									var compare1 = new Date(decGet[0]*1000);
+									var compare2 = new Date(decGet[0]*1000);
 									
+
 									if(checkTime.indexOf("h") !== -1)
 									{
 										newCheckTime = checkTime.replace("h","");
