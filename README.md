@@ -19,15 +19,15 @@ lightToken contains open-ssl-cipher-algorithms by three section like Json Web To
 
 #### First Section
 
-> Encryption started with choosed one algorithm. Encryption data : payload
+> Encryption started with choosed one algorithm and key from options. Encryption data : payload
 
 #### Second Section
 
-> Encryption contuniued with RC4-HMAC-MD5 algorithm. Encryption data : options + "." + lightTID
+> Encryption contuniued with RC4-HMAC-MD5 algorithm and key. Encryption data : options + "." + lightTID
 
 #### Third Section
 
-> Encryption contuniued with RC4-HMAC-MD5 algorithm. Encryption data : timestamped date now + "." + expire
+> Encryption contuniued with RC4-HMAC-MD5 algorithm and key. Encryption data : timestamped date now + "." + expire
 
 
 ```
