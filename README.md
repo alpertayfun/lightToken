@@ -32,7 +32,7 @@ lightToken contains open-ssl-cipher-algorithms by three section like Json Web To
 
 ### Why ?
 
-- lightToken is simple. Open sourced. 
+- lightToken is simple. Open source. 
 - Default installed crypto module for lightToken. 
 - Flexible secure three level layer.
 - It is more secure than other Json Web Tokens with strongest open-ssl algorithms.
