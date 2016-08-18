@@ -30,6 +30,14 @@ lightToken contains open-ssl-cipher-algorithms by three section like Json Web To
 > Encryption contuniued with RC4-HMAC-MD5 algorithm and key. Encryption data : timestamped date now + "." + expire
 
 
+### Why ?
+
+- lightToken is simple. Open sourced. 
+- Default installed crypto module for lightToken. 
+- Flexible secure three level layer.
+- It is more secure than other Json Web Tokens with strongest open-ssl algorithms.
+
+
 ```
 npm install lighttoken
 ```
