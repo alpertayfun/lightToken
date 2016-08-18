@@ -12,6 +12,24 @@
 Simple use Token.
 
 
+### Description
+
+
+lightToken contains open-ssl-cipher-algorithms by three section like Json Web Token. 
+
+#### First Section
+
+> Encryption started with choosed one algorithm. Encryption data : payload
+
+#### Second Section
+
+> Encryption contuniued with RC4-HMAC-MD5 algorithm. Encryption data : options + "." + lightTID
+
+#### Third Section
+
+> Encryption contuniued with RC4-HMAC-MD5 algorithm. Encryption data : timestamped date now + "." + expire
+
+
 ```
 npm install lighttoken
 ```
@@ -21,7 +39,7 @@ npm install lighttoken
 
 - secretKey ( key ): A shared or secret key.
 - payload : Javascript Object.
-- options : algroithm ( Default : DES-EDE-CBC ), expire ( Default : 0 ( infite ) ). 
+- options : algorithm ( Default : DES-EDE-CBC ), expire ( Default : 0 ( infite ) ). 
 
 
 ### Options : 
@@ -93,6 +111,13 @@ Returns :
 {error:"auth Error"}
 ```
 
+### Changelog
+
+## Version - 1.0.31
+
+- Date object changed to timestamp. 
+- Changed algorithm2 & algorithm3 with "RC4-HMAC-MD5"
+- Fixes for large tokens
 
 ### Support
 
