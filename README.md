@@ -121,11 +121,17 @@ Returns :
 
 ### Changelog
 
+## Version - 1.0.34
+
+- Text support.
+
 ## Version - 1.0.31
 
 - Date object changed to timestamp. 
 - Changed algorithm2 & algorithm3 with "RC4-HMAC-MD5"
 - Fixes for large tokens
+
+
 
 ### Support
 
