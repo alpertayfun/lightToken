@@ -144,6 +144,7 @@ var Base64 = {
 
 try {
 
+
 	var getByes = function (e) {
     	var bytes = [];
 	  	for (var i = 0; i < e.length; ++i) {
@@ -191,12 +192,14 @@ try {
 
 		if(dec==lightTIDEnc0)
 		{
-			callback({verify:JSON.parse(dec),lightTID:optionsGet4 });
+			if(typeof dec === 'object'){
+				callback({verify:JSON.parse(dec),lightTID:optionsGet4 });
+			}else{
+				callback({verify:dec,lightTID:optionsGet4 });
+			}
 		}else{
 			callback({error:"auth Error"});
 		}
-		
-
 	};
 
 	Object.prototype.hasOwnProperty = function(property) {
@@ -211,42 +214,82 @@ try {
 		{
 			try{
 
-				var now = Date.now();
-				
-				lightTID = Base64.encode(JSON.stringify(message)+"|||"+key);
+				if(typeof message === 'object'){
+					var now = Date.now();
+					
+					lightTID = Base64.encode(JSON.stringify(message)+"|||"+key);
 
-				if(options.hasOwnProperty("algorithm"))
-				{
-					algorithm = options.algorithm;
+					if(options.hasOwnProperty("algorithm"))
+					{
+						algorithm = options.algorithm;
+					}
+
+					if(options.hasOwnProperty("expire"))
+					{
+						expire = options.expire;
+					}
+
+					var cipher = crypto.createCipher(algorithm,key);
+					var crypted = cipher.update(JSON.stringify(message),'utf8','hex');
+					crypted += cipher.final('hex');
+					
+					var hash = crypto.createHmac('SHA256', key).update(JSON.stringify(message)).digest('hex');
+					
+					var cipher2 = crypto.createCipher(algorithm2,key);
+					var crypted2 = cipher2.update(JSON.stringify(options)+"."+lightTID,'utf8','hex');
+					crypted2 += cipher2.final('hex');
+					
+					var bb = timeStamp(now)+"."+expire;
+					//var buff = new Buffer(JSON.stringify(options)+"."+lightTID).toString("base64");
+					//console.log(buff);
+					//console.log(Base64.decode(buff));
+
+					var cipher3 = crypto.createCipher(algorithm3,key);
+					var crypted3 = cipher3.update(bb,'utf8','hex');
+					crypted3 += cipher3.final('hex');
+					console.log("len total : "+ (crypted.length + crypted2.length + crypted3.length));
+
+					callback({sign:""+crypted+"."+crypted2+"."+crypted3+"",algorithm:algorithm,expire:expire,lightTID:lightTID});
+					return crypted+"."+crypted2+"."+crypted3;
+
+				}else{
+					var now = Date.now();
+				
+					lightTID = Base64.encode(message+"|||"+key);
+
+					if(options.hasOwnProperty("algorithm"))
+					{
+						algorithm = options.algorithm;
+					}
+
+					if(options.hasOwnProperty("expire"))
+					{
+						expire = options.expire;
+					}
+
+					var cipher = crypto.createCipher(algorithm,key);
+					var crypted = cipher.update(message,'utf8','hex');
+					crypted += cipher.final('hex');
+					
+					var hash = crypto.createHmac('SHA256', key).update(message).digest('hex');
+					
+					var cipher2 = crypto.createCipher(algorithm2,key);
+					var crypted2 = cipher2.update(JSON.stringify(options)+"."+lightTID,'utf8','hex');
+					crypted2 += cipher2.final('hex');
+					
+					var bb = timeStamp(now)+"."+expire;
+
+					var cipher3 = crypto.createCipher(algorithm3,key);
+					var crypted3 = cipher3.update(bb,'utf8','hex');
+					crypted3 += cipher3.final('hex');
+					console.log("len total : "+ (crypted.length + crypted2.length + crypted3.length));
+
+					callback({sign:""+crypted+"."+crypted2+"."+crypted3+"",algorithm:algorithm,expire:expire,lightTID:lightTID});
+					return crypted+"."+crypted2+"."+crypted3;
+
 				}
 
-				if(options.hasOwnProperty("expire"))
-				{
-					expire = options.expire;
-				}
-
-				var cipher = crypto.createCipher(algorithm,key);
-				var crypted = cipher.update(JSON.stringify(message),'utf8','hex');
-				crypted += cipher.final('hex');
 				
-				var hash = crypto.createHmac('SHA256', key).update(JSON.stringify(message)).digest('hex');
-				
-				var cipher2 = crypto.createCipher(algorithm2,key);
-				var crypted2 = cipher2.update(JSON.stringify(options)+"."+lightTID,'utf8','hex');
-				crypted2 += cipher2.final('hex');
-				
-				var bb = timeStamp(now)+"."+expire;
-				//var buff = new Buffer(JSON.stringify(options)+"."+lightTID).toString("base64");
-				//console.log(buff);
-				//console.log(Base64.decode(buff));
-
-				var cipher3 = crypto.createCipher(algorithm3,key);
-				var crypted3 = cipher3.update(bb,'utf8','hex');
-				crypted3 += cipher3.final('hex');
-				console.log("len total : "+ (crypted.length + crypted2.length + crypted3.length));
-
-				callback({sign:""+crypted+"."+crypted2+"."+crypted3+"",algorithm:algorithm,expire:expire,lightTID:lightTID});
-				return crypted+"."+crypted2+"."+crypted3;
 				
 			}catch(e){
 				console.log(e);
@@ -431,7 +474,6 @@ try {
 			callback({error:"auth Error"});
 			return "auth Error";
 		}
-	
 	};
 
 } catch (err) {
