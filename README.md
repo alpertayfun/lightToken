@@ -139,7 +139,7 @@ Need help or have a question?
 
 - [Gitter Chat Room](https://gitter.im/lighttoken/Lobby)
 
-Do you want to support ?
+Do you want to donate ?
 
 [![Support on Gratipay](https://img.shields.io/gratipay/alpertayfun.svg)](https://gratipay.com/~alpertayfun/)
 
