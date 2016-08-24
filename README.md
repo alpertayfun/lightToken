@@ -123,7 +123,7 @@ Returns :
 
 ## Version - 1.0.34
 
-- Text support.
+- Text support added.
 
 ## Version - 1.0.31
 
@@ -138,3 +138,8 @@ Returns :
 Need help or have a question?
 
 - [Gitter Chat Room](https://gitter.im/lighttoken/Lobby)
+
+Do you want to support ?
+
+[![Support on Gratipay](https://img.shields.io/gratipay/alpertayfun.svg)](https://gratipay.com/~alpertayfun/)
+
