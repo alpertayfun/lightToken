@@ -458,12 +458,12 @@ try {
 							
 							}
 						}else{
-							callback({error:"auth3 Error"});
-							return "auth3 Error";
+							callback({error:"auth Error"});
+							return "auth Error";
 						}
 					}else{
-						callback({error:"auth4 Error"});
-						return "auth4 Error";
+						callback({error:"auth Error"});
+						return "auth Error";
 					}
 				}else{
 					callback({error:"auth Error"});
